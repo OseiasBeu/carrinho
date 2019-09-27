@@ -1,0 +1,15 @@
+1º Encontrar alguém pra me ajudar!
+2º Definir rotas para o servidor cliente-mercado
+3º Definir rotas para o servidor cliente-consumidor
+4º Estruturar banco de dados
+5º Popular base de dados com clientes-mercado fictícios
+6º Popular bae de dados com clientes-consumidor fictícios
+7º Estruturar API cliente-mercado
+8º Estruturar API cliente-consumidor
+9º Criar API de autenticação de login e email cliente-consumidor
+10º Criar API de autenticação de login e email cliente-mercado
+11º Estruturar API de geolocalização
+12º Estruturar frontend cliente-consumidor
+13º Estruturar frontend cliente-mercado
+14º Estruturar API frontend cliente-mercado/consumidor
+15º Modelar banco de dados de imagens
