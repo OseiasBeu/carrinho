@@ -1,21 +1,22 @@
 const mongoose = require('../database/database.js');
+const bcrypt = require('bcrypt');
 const UsuarioSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
         lowercase: true
     },
-    email:{
-        type:String,
+    email: {
+        type: String,
         required: true
     },
-    endereco:{
-        type:String,
+    endereco: {
+        type: String,
     },
-    cep:{
-        type:String
+    cep: {
+        type: String
     },
-    temMercado:{
+    temMercado: {
         type: Boolean,
         required: true,
         default: false
@@ -27,7 +28,7 @@ const UsuarioSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    password2:{
+    password2: {
         type: String
     }
 });
