@@ -1,39 +1,33 @@
-// const mongoose = require('../database/database.js');
-// const ProdutoSchema = new mongoose.Schema({
-//  id_produto:{
-//      type: Number,
-//      required: true
-//  },
-//  nome_Produto:{
-//      type: String,
-//      required:true,
-//  },
-//  categoria:{
-//      type: String
-//  },
-//  codigo_de_barra_principal:{
-//      type: Number
-//  },
-//  preco:{
-//      type: Number
-//  }
-// });
-
-
-// const Produto = mongoose.model('Produto', ProdutoSchema);
-
-// module.exports = Produto; 
-
+const express = require('express');
 let MongoClient = require('mongodb').MongoClient;
-let express = require('express');
 let url = 'mongodb+srv://admin:26031998boxe@@cluster0-kmy6c.mongodb.net/'
+const cors = require('cors');
+const bodyParser = require('body-parser');
 let app = express();
-let bodyParser = require('body-parser');
-let cors = require('cors');
-app.use(bodyParser.urlencoded({ extended: true }))
 
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json());
 app.use(cors());
+
+
+// =========================---MÉTODOS DE CONSULTA---=================================
+app.get('/', (req, res) => {
+
+    let cursor = db.collection('/mkt1').find().toArray()
+    res.send(cursor);
+    console.log(`TESTE DE FUNCIONAMENTO EXECUTADO COM SUCESSO! ${cursor}`)
+});
+
+app.get('/listaprodutos', async (req, res) => {
+    console.log('listando produtos')
+    await db.collection('/mkt1').find().toArray(function (erro, dados) {
+        if (erro) {
+            res.status(500).send('Aconteceu um ERRO!!!!');
+            return;
+        }
+        res.status(200).send(dados);
+    })
+})
 
 
 MongoClient.connect(url, {
@@ -45,7 +39,7 @@ MongoClient.connect(url, {
     db = client.db('carrinho')
 
 
-    const port = process.env.PORT || 8080;
+    const port = process.env.PORT || 3001;
     app.listen(port, () => {
         console.log(`=================================================`)
         console.log(`Servidor funcionando na porta ${port}!`)
@@ -53,15 +47,3 @@ MongoClient.connect(url, {
         console.log(`=================================================`)
     })
 })
-
-  app.get('/listaprodutos', function(req, res) {
-    db.collection('mkt1').find().toArray(function(erro, dados) {
-        if (erro) {
-            res.status(500).send('Aconteceu um ERRO!!!!');
-            return;
-        }
-        res.status(200).send(dados);
-    });
-});
-
-
