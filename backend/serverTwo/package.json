@@ -8,13 +8,16 @@
     "cors": "^2.8.5",
     "eslint": "^6.5.0",
     "express": "^4.17.1",
+    "express-middleware": "^3.4.2",
     "express-mongo": "^0.3.0",
+    "middleware": "^1.0.0",
     "mongodb": "^3.3.2",
     "nodemon": "^1.19.3"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon produto.js"
   },
   "author": "Oséias Beu",
   "license": "ISC"
