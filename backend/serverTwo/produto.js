@@ -33,6 +33,35 @@ app.get('/listaprodutos/:collection',async    (req, res) => {
 });
 
 
+app.post('/colocanocarrinho/:collection',async    (req, res) => {
+    let collection = req.params.collection;
+    let carrinho = Object.values(req.body)
+    console.log(carrinho[0])
+    let cursor = await db.collection(`${collection}`).find({"ID_PRODUTO":{$in:carrinho[0]}}).toArray()
+    try{
+        res.send(cursor)
+    }catch{
+        res.send(`<h2>DEU RUIM</h2>`)
+    }
+});
+
+
+app.post('/filtroPorNome/:collection',async    (req, res) => {
+    let collection = req.params.collection;
+    let carrinho = Object.values(req.body)
+    console.log(carrinho[0])
+    // let query = ['ABACATE','abacate']
+    let  regex = carrinho[0].map(function (e) { return new RegExp(e,"i"); });
+    let cursor = await db.collection(`${collection}`).find({"NOME_PRODUTO":{$in: regex}}).toArray() 
+    console.log(cursor)
+    try{
+        res.send(cursor)
+    }catch{
+        res.send(`<h2>DEU RUIM</h2>`)
+    }
+});
+
+
 
 MongoClient.connect(url, {
     useNewUrlParser: true,
@@ -51,3 +80,39 @@ MongoClient.connect(url, {
         console.log(`=================================================`)
     })
 })
+
+
+
+/*
+CESTA BÁSICA
+[6476,7506339394603,]
+db.mkt1.find({"ID_PRODUTO":{$in:[6476,7506339394603]}})
+[7897022000018,7897173600037,7891103187827,8413700164286,7898949924289,
+    7896362900088,
+    7896041162516,
+    7898045270655, 
+    7898171843044,
+    7898462314321,
+    97,
+    7896315400702,
+    3560070212682,
+    7898215152330]
+0 -arroz;
+1 -feijão;
+2 -óleo de soja;
+3 -sal;
+4 -açúcar;
+5 -café;
+6 -molho de tomate;
+7 -macarrão espaguete ou parafuso;
+8 -sardinha/atum;
+9 -salsicha/charque;
+10 -milho;
+11 -ervilha;
+12 -farinha de trigo;
+13 -biscoito doce ou salgado;
+14 -leite em pó.
+
+BUSCA APROXIMADA POR PRODUTO:
+let cursor = await db.collection(`${collection}`).find({"NOME_PRODUTO": /ABACATE/}).toArray()
+*/
