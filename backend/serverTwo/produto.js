@@ -70,26 +70,48 @@ app.post('/selecionaMenorPreco', async (req, res) => {
     let collection = ['mkt1', 'mkt2', 'mkt3', 'mkt4', 'mkt5']
     let opcoes = [{}]
     let carrinho = Object.values(req.body)
-    console.log(carrinho[0])
-    let cursor = await pesquisaPorCollection(carrinho)
     
     async function  pesquisaPorCollection(arr) {
         for (coll in collection) {
-            // console.log(collection[coll])
           opcoes[coll] = await db.collection(`${collection[coll]}`).find({ "ID_PRODUTO": { $in: arr[0] } }).toArray()
-        //   console.log(opcoes)
         }
         return opcoes
     }
 
-    console.log(cursor)
+    let cursor = await pesquisaPorCollection(carrinho)
+    let resultado = calculaMenorPreco(cursor)
     try {
-        res.send(cursor)
+        res.send(resultado)
     } catch{
         res.send(`<h2>DEU RUIM</h2>`)
     }
 });
 
+function calculaMenorPreco(cursor) {
+    let comprimentoInterno = cursor[0].length;
+    let mercados = cursor.length
+    let soma;
+    let valores = []
+    for (let contador2 = 0; contador2 < mercados; contador2++) {
+        // console.log('================================================================')
+        // console.log(`Mercado: ${contador2 + 1}`)
+        soma = 0
+        for (let contador = 0; contador < comprimentoInterno; contador++) {
+            // console.log(cursor[contador2][contador].preco)
+            soma += cursor[contador2][contador].preco
+        }
+        valores.push(soma)
+        // console.log(`Valor da soma:${soma}`)
+        // console.log(`array de valores:${valores}`)
+        // console.log('Soma adicioanda no array')
+        // console.log('================================================================')
+    }
+    let menorValor = Math.min(...valores)
+    let mercadoParaComprar = valores.indexOf(menorValor)+1
+    // console.log(mercadoParaComprar)
+
+    return `Os melhores lugares para você comprar são: \n Mercado ${mercadoParaComprar} \n Valor:${menorValor}`
+}
 
 
 
