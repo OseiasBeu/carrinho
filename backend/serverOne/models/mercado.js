@@ -15,7 +15,7 @@ const MercadoSchema = new mongoose.Schema({
      require: true
  },
  cep:{
-     type: String,
+     type: Number,
      require: true
  }
 });

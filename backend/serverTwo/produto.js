@@ -73,10 +73,12 @@ app.post('/selecionaMenorPreco', async (req, res) => {
     // let carrinho = listaEendereco[0]
     let cep = carrinho[1]
     let collection = carrinho[1]
+    // let collection = lugaresProximos
     // ['mkt1', 'mkt2', 'mkt3', 'mkt4', 'mkt5']
     console.log(`O cep é: ${cep}`)
     console.log(carrinho)
     console.log(collection)
+    
     
     async function  pesquisaPorCollection(arr) {
         for (coll in collection) {
@@ -87,6 +89,7 @@ app.post('/selecionaMenorPreco', async (req, res) => {
 
     let cursor = await pesquisaPorCollection(carrinho)
     let resultado = calculaMenorPreco(cursor)
+    // let lugaresProximos =  buscaMecadoProximo(cep,listaDeCeps)
     console.log(resultado)
 
 
@@ -123,7 +126,26 @@ function calculaMenorPreco(cursor) {
     return [mercadoParaComprar, menorValor]
 }
 
-
+function buscaMecadoProximo(cep, arr) {
+    let lugaresProximos = []
+    let sub = 0
+    for (let cont = 0; cont < arr.length; cont++) {
+        if (arr[cont] > cep) {
+            sub = arr[cont] - cep
+            if (sub <= 2) {
+                lugaresProximos.push(arr[cont])
+            }
+        } else if (arr[cont] < cep) {
+            if (sub >= 2) {
+                lugaresProximos.push(arr[cont])
+            }
+        }else {
+                lugaresProximos.push(arr[cont])
+        }
+        console.log(lugaresProximos)
+    }
+    return lugaresProximos
+}
 
 MongoClient.connect(url, {
     useNewUrlParser: true,
