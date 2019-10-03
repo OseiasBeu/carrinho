@@ -67,9 +67,16 @@ app.post('/filtroPorNomeEMercado/:collection', async (req, res) => {
  ---PARA CHAMAR NO FRONTEND---
 */
 app.post('/selecionaMenorPreco', async (req, res) => {
-    let collection = ['mkt1', 'mkt2', 'mkt3', 'mkt4', 'mkt5']
+    
     let opcoes = [{}]
     let carrinho = Object.values(req.body)
+    // let carrinho = listaEendereco[0]
+    let cep = carrinho[1]
+    let collection = carrinho[1]
+    // ['mkt1', 'mkt2', 'mkt3', 'mkt4', 'mkt5']
+    console.log(`O cep é: ${cep}`)
+    console.log(carrinho)
+    console.log(collection)
     
     async function  pesquisaPorCollection(arr) {
         for (coll in collection) {
@@ -80,8 +87,11 @@ app.post('/selecionaMenorPreco', async (req, res) => {
 
     let cursor = await pesquisaPorCollection(carrinho)
     let resultado = calculaMenorPreco(cursor)
+    console.log(resultado)
+
+
     try {
-        res.send(resultado)
+        res.send(`O melhor mercado para compra é: \n Mercado: ${cep[resultado[0]]} \n valor total: ${resultado[1]}`)
     } catch{
         res.send(`<h2>DEU RUIM</h2>`)
     }
@@ -107,10 +117,10 @@ function calculaMenorPreco(cursor) {
         // console.log('================================================================')
     }
     let menorValor = Math.min(...valores)
-    let mercadoParaComprar = valores.indexOf(menorValor)+1
-    // console.log(mercadoParaComprar)
+    let mercadoParaComprar = valores.indexOf(menorValor)
+    console.log(mercadoParaComprar)
 
-    return `Os melhores lugares para você comprar são: \n Mercado ${mercadoParaComprar} \n Valor:${menorValor}`
+    return [mercadoParaComprar, menorValor]
 }
 
 
